@@ -274,27 +274,26 @@ SELECT *
 FROM store
 LIMIT 10;
 /* There only 2 stores in the stores table.*/
-/* Where only 599 customer_ids are unique.*/
 
--- Checking the table film --
+-- Checking the table film
 
 SELECT *
 FROM film
 LIMIT 5;
 
---  Find the shortest, longest and the average length in the film table. -- 
+--  Find the shortest, longest and the average length in the film table.
 SELECT	MIN(length) AS shortest_film,
 		MAX(length) AS longest_film,
 		AVG(length) AS avg_lenght_film
 FROM film;
 
--- Checking the titles and description of the movies with the longest duration. --
+-- Checking the titles and description of the movies with the longest duration.
 SELECT	title, description, release_year, rating, length
 FROM film
 WHERE length = (SELECT MAX(length) FROM film)
 ORDER BY title ASC;
 
--- Checking how many films last more than 60 minutes grouped by the length. --
+-- Checking how many films last more than 60 minutes grouped by the length.
 SELECT	length,
 		COUNT(rating) AS total_by_rating
 FROM film
@@ -314,15 +313,70 @@ WHERE length > 60
 GROUP BY	c.name
 ORDER BY total_by_category DESC;
 
--- The top 3 categories with movies more than 60 minutes are: Sports, Foreign, and Family.--
+-- The top 3 categories with movies more than 60 minutes are: Sports, Foreign, and Family.
+
+-- Top 10 categories with the longest film duration
+SELECT	c.name AS category,
+        f.length
+FROM	film AS f
+		INNER JOIN film_category AS fc
+			ON f.film_id = fc.film_id
+        INNER JOIN category AS c
+			ON fc.category_id = c.category_id
+GROUP BY	c.name,
+			f.length
+ORDER BY	f.length DESC
+LIMIT 10;
 
 
+-- How many films each actor has by category:
+SELECT	a.first_name,
+		a.last_name,
+		c.name,
+        COUNT(f.film_id) AS total_actor_film_by_category
+FROM	actor AS a
+	INNER JOIN film_actor AS fa
+    ON a.actor_id = fa.actor_id
+		INNER JOIN film AS f
+        ON fa.film_id = f.film_id
+			INNER JOIN filM_category AS fc
+            ON f.film_id = fc.film_id
+				INNER JOIN category AS c
+                ON fc.category_id = c.category_id
+GROUP BY	a.first_name,
+			a.last_name,
+			c.name
+ORDER BY total_actor_movie_by_category DESC;
+
+-- List of films and their corresponding categories sorted by film title in ascending alphabetical order with their corresponding length
+SELECT	f.title,
+		c.name AS category,
+        f.length
+FROM	film AS f
+		INNER JOIN film_category AS fc
+			ON f.film_id = fc.film_id
+        INNER JOIN category AS c
+			ON fc.category_id = c.category_id
+GROUP BY f.title, c.name, f.length
+ORDER BY f.title ASC;
 
 
+-- Checking the payments for a specific day
+SELECT *
+FROM payment
+WHERE payment_date LIKE '%2005-07-28%';
 
 
-
-
-
-
-
+-- Checking in an average how much each staff received renting during the month of July with the respective names.
+SELECT	p.staff_id,
+		s.first_name,
+        s.last_name,
+		ROUND(AVG(p.amount), 2) AS July_avg_per_staff
+FROM	payment AS p
+			INNER JOIN staff AS s
+            ON p.staff_id = s.staff_id
+WHERE	payment_date LIKE '2005-07%'
+GROUP BY	p.staff_id,
+			s.first_name,
+            s.last_name
+ORDER BY	July_avg_per_staff;
