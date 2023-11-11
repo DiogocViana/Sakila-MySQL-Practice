@@ -1,12 +1,10 @@
 /**
 Author: Diogo Viana
-Data Scientist
+Data Scientist / Data Analyst
 
 Contact:
 d.cviana@outlook.com
 https://www.linkedin.com/in/diogo-viana/
-
-January 2023
 
 MySQL practice
 MySQL Sakila Practice exercices
