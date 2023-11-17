@@ -375,6 +375,17 @@ FROM	payment AS p
             ON p.staff_id = s.staff_id
 WHERE	payment_date LIKE '2005-07%'
 GROUP BY	p.staff_id,
-			s.first_name,
+		s.first_name,
             s.last_name
 ORDER BY	July_avg_per_staff;
+
+
+-- Using IN to find a specific name.
+SELECT	*
+FROM	actor
+WHERE	first_name IN ('PENELOPE', 'NICK', 'ED')
+
+-- Using LIKE to find a specific names.
+SELECT	*
+FROM	actor
+WHERE	first_name LIKE 'PENELOPE$'
