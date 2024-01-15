@@ -389,3 +389,15 @@ WHERE	first_name IN ('PENELOPE', 'NICK', 'ED')
 SELECT	*
 FROM	actor
 WHERE	first_name LIKE 'PENELOPE$'
+
+-- Listing the top five genres in gross revenue in decending order.
+SELECT c.name AS 'Film', sum(p.amount) AS 'Gross Revenue'
+FROM category AS c
+	JOIN film_category AS fc ON fc.category_id = c.category_id
+	JOIN inventory AS i ON i.film_id = fc.film_id
+	JOIN rental AS r ON r.inventory_id = i.inventory_id
+	JOIN payment AS p ON p.rental_id = r.rental_id
+GROUP BY c.name
+ORDER BY sum(p.amount) DESC
+LIMIT 5;
+
