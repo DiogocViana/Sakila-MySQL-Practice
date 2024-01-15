@@ -401,3 +401,15 @@ GROUP BY c.name
 ORDER BY sum(p.amount) DESC
 LIMIT 5;
 
+-- Writing a query to display how much business, in dollars, each store brought in.
+SELECT store AS 'Store', total_sales AS 'Total Sales' FROM sales_by_store;
+
+SELECT concat(c.city,', ',cy.country) AS `Store`, s.store_id AS 'Store ID', sum(p.amount) AS `Total Sales` 
+FROM payment AS p
+	JOIN rental AS r ON r.rental_id = p.rental_id
+	JOIN inventory AS i ON i.inventory_id = r.inventory_id
+	JOIN store AS s ON s.store_id = i.store_id
+	JOIN address AS a ON a.address_id = s.address_id
+	JOIN city AS c ON c.city_id = a.city_id
+	JOIN country AS cy ON cy.country_id = c.country_id
+GROUP BY s.store_id;
