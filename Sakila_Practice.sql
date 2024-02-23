@@ -20,6 +20,7 @@ USE sakila;
 DESC actor;
 /* As we can see, there are 4 columns in the actor table.*/
 
+
 SELECT COUNT(*)
 FROM actor;
 /* There are 200 rows in the actor table.*/
